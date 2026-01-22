@@ -1,19 +1,20 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"><head>
+<html lang="ar" dir="rtl">
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مكنيك برو</title>
-    <meta name="description" content="منصة ميكانيكية متكاملة مع تصنيف دقيق للسيارات (أمريكي، كوري، صيني، ياباني، ألماني).">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>الميكانيك المحترف | تحليل ذكي</title>
+    <meta name="description" content="أداة تشخيص OBD-II ذكية ومتجاوبة مع جميع الشاشات.">
     
-    <!-- خط عريض وميكانيكي (Cairo) -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&amp;display=swap" rel="stylesheet">
+    <!-- خط Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
 
     <style>
         /* ==========================================
-           ثيم "الميكانيك الصناعي" (Industrial Dark)
+           CSS: متجاوب بالكامل (Responsive)
            ========================================== */
         :root {
-            --primary: #f97316; /* برتقالي */
+            --primary: #f97316;
             --primary-hover: #ea580c;
             --dark-bg: #121212;
             --panel-bg: #1e293b;
@@ -23,7 +24,7 @@
             --shadow-hard: 4px 4px 0px #000;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Cairo', sans-serif;
@@ -32,34 +33,40 @@
             line-height: 1.6;
             background-image: radial-gradient(#334155 1px, transparent 1px);
             background-size: 20px 20px;
+            overflow-x: hidden;
+            padding-bottom: 20px; /* مسافة إضافية في الأسفل */
         }
 
-        /* Header */
+        /* Header Responsive */
         header {
             background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
             border-bottom: 3px solid var(--primary);
-            padding: 2rem 1rem;
+            padding: 1.5rem 1rem;
             text-align: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         header h1 {
             font-weight: 900;
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-light);
             text-shadow: 2px 2px 0px var(--primary);
         }
 
-        header p { color: var(--text-dim); font-size: 1rem; margin-top: 5px; }
+        @media (min-width: 768px) {
+            header h1 { font-size: 2.5rem; }
+        }
+
+        header p { color: var(--text-dim); font-size: 0.9rem; margin-top: 5px; }
 
         .container { max-width: 1100px; margin: 0 auto; padding: 1rem; }
 
         .card {
             background-color: var(--panel-bg);
             border: 2px solid var(--border-metal);
-            border-radius: 4px;
+            border-radius: 8px;
             padding: 1.5rem;
             margin-bottom: 2rem;
             box-shadow: var(--shadow-hard);
@@ -78,24 +85,30 @@
             margin-bottom: 1.5rem;
             border-bottom: 2px dashed var(--border-metal);
             padding-bottom: 10px;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
+        /* Inputs & Buttons Responsive */
         .search-box { display: flex; gap: 10px; flex-wrap: wrap; }
 
         input[type="text"], input[type="number"], select {
             background: #0f172a;
             border: 2px solid var(--border-metal);
             color: var(--text-light);
-            padding: 12px;
+            padding: 14px;
             font-family: 'Cairo', sans-serif;
             font-weight: 600;
-            border-radius: 4px;
+            border-radius: 8px;
             width: 100%;
+            font-size: 1rem;
             transition: border-color 0.3s;
+        }
+
+        @media (min-width: 768px) {
+            .search-box input { flex: 2; }
         }
 
         input:focus { border-color: var(--primary); }
@@ -103,11 +116,11 @@
         .btn {
             background-color: var(--primary);
             color: #000;
-            padding: 12px 25px;
+            padding: 14px 20px;
             border: none;
             font-weight: 900;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 8px;
             text-transform: uppercase;
             box-shadow: 3px 3px 0px rgba(0,0,0,0.5);
             transition: all 0.2s;
@@ -116,120 +129,158 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            width: 100%;
         }
 
-        .btn:hover {
-            transform: translate(-1px, -1px);
-            box-shadow: 4px 4px 0px rgba(0,0,0,0.8);
-            background-color: var(--primary-hover);
+        @media (min-width: 600px) {
+            .btn { width: auto; }
         }
 
+        .btn:hover { transform: translate(-1px, -1px); background-color: var(--primary-hover); }
         .btn:active { transform: translate(1px, 1px); box-shadow: 0px 0px 0px; }
-
         .btn-secondary { background-color: #334155; color: #fff; border: 1px solid #475569; }
-        .btn-secondary:hover { background-color: #475569; }
-        .btn-ai { background: linear-gradient(45deg, #3b82f6, #8b5cf6); color: #fff; }
+        .btn-ai { background: linear-gradient(45deg, #3b82f6, #8b5cf6); color: #fff; border: none; }
 
+        /* Result Box */
         .result-box {
             background: rgba(0,0,0,0.3);
             border: 1px solid var(--border-metal);
-            padding: 1rem;
+            padding: 1.2rem;
             margin-top: 1rem;
             display: none;
-            border-radius: 4px;
+            border-radius: 8px;
+            animation: slideIn 0.3s;
         }
-        .result-box.active { display: block; animation: slideIn 0.3s; }
+        .result-box.active { display: block; }
         
         .code-display {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 900;
             color: var(--primary);
             letter-spacing: 2px;
         }
+        @media (max-width: 400px) { .code-display { font-size: 1.5rem; } }
 
+        /* Calculators Grid */
         .calc-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: 1fr;
             gap: 20px;
+        }
+        @media (min-width: 768px) {
+            .calc-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
         }
 
         .calc-item {
             background: #151f2e;
             padding: 15px;
             border: 1px solid var(--border-metal);
+            border-radius: 8px;
         }
         .calc-item h3 { color: var(--text-light); margin-bottom: 10px; font-size: 1.1rem; }
 
-        .table-container { overflow-x: auto; }
+        /* Table Responsive */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-metal);
+        }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
         th, td { padding: 12px; text-align: right; border-bottom: 1px solid var(--border-metal); font-size: 0.9rem; }
-        th { background-color: #0f172a; color: var(--primary); font-weight: 800; }
+        th { background-color: #0f172a; color: var(--primary); font-weight: 800; white-space: nowrap; }
         tr:hover { background-color: rgba(255,255,255,0.05); cursor: pointer; }
 
+        /* Footer Styling */
         footer {
             background-color: #0f172a;
             border-top: 4px solid var(--border-metal);
-            padding: 2rem;
+            padding: 2rem 1rem;
             text-align: center;
-            margin-top: 3rem;
+            margin-top: 4rem; /* مسافة علوية كبيرة لفصله عن المحتوى */
+        }
+        .dev-name {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: block;
+            text-shadow: 1px 1px 0px #000;
         }
         .social-link {
             color: var(--text-light);
             text-decoration: none;
-            margin: 0 10px;
+            margin: 5px;
             font-weight: bold;
             border: 1px solid var(--primary);
-            padding: 5px 15px;
-            border-radius: 4px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
+            transition: all 0.3s;
         }
-        .social-link:hover { background: var(--primary); color: #000; }
+        .social-link:hover { background: var(--primary); color: #000; transform: translateY(-2px); }
+
+        /* AI Loading Animation */
+        .ai-steps {
+            text-align: right;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            color: var(--primary);
+        }
+        .step { opacity: 0; margin-bottom: 5px; transition: opacity 0.5s; }
+        .step.active { opacity: 1; }
 
         @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        @media (max-width: 600px) {
-            header h1 { font-size: 1.5rem; }
-            .btn { width: 100%; }
-        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🔧 ميكانيك برو OBD-II&nbsp;</h1>
-        <p>&nbsp;أمريكي - كوري - صيني - ياباني - ألماني</p>
+        <h1>🔧 الميكانيك المحترف</h1>
+        <p>تشخيص ذكي + حاسبات فنية متكاملة</p>
     </header>
 
     <div class="container">
 
-        <!-- قسم البحث -->
+        <!-- قسم البحث والتحليل -->
         <section class="card">
-            <h2 class="section-title">🔍 تشخيص كود العطل</h2>
+            <h2 class="section-title">🧠 محرك التحليل الذكي</h2>
             <div class="search-box">
-                <input type="text" id="codeInput" placeholder="أدخل الكود (مثال: P0171, C0035)" style="flex: 2;">
+                <input type="text" id="codeInput" placeholder="أدخل الكود (مثال: P0300, P0420)">
                 <button class="btn" onclick="searchCode()">
-                    <span>🛠️</span> بحث
+                    <span>🛠️</span> بحث عادي
                 </button>
-                <button class="btn btn-ai" onclick="aiAnalyze()">
-                    <span>🤖</span> تحليل ذكي
+                <button class="btn btn-ai" onclick="smartAIAnalyze()">
+                    <span>🤖</span> تحليل AI ذكي
                 </button>
             </div>
             <div id="errorMsg" style="color: #ef4444; margin-top:10px; display:none; font-weight:bold;"></div>
 
+            <!-- AI Loading Animation -->
+            <div id="aiLoading" style="display:none; margin-top:20px; padding:15px; border:1px dashed #334155; border-radius:8px;">
+                <div style="text-align:center; margin-bottom:10px;">جاري معالجة البيانات...</div>
+                <div class="ai-steps">
+                    <div class="step" id="step1">1. فحص هيكلية الكود (Structure Check)...</div>
+                    <div class="step" id="step2">2. تحليل النظام الفرعي (Subsystem Analysis)...</div>
+                    <div class="step" id="step3">3. مطابقة أعراض محتملة (Symptom Matching)...</div>
+                    <div class="step" id="step4">4. إنشاء التقرير الفني (Generating Report)...</div>
+                </div>
+            </div>
+
             <div id="resultCard" class="result-box">
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:10px; margin-bottom:15px;">
                     <span id="resCode" class="code-display">P0000</span>
-                    <span id="resBrand" style="background:var(--primary); color:#000; padding:2px 10px; font-weight:bold; border-radius:2px;">عام</span>
+                    <span id="resBrand" style="background:var(--primary); color:#000; padding:4px 10px; font-weight:bold; border-radius:4px; font-size:0.8rem;">عام</span>
                 </div>
                 <div style="display: grid; gap: 15px;">
                     <div><strong style="color:var(--primary)">⚠️ العطل:</strong> <span id="resMeaning">-</span></div>
                     <div><strong style="color:var(--text-dim)">⚙️ السبب المحتمل:</strong> <span id="resCause">-</span></div>
                     <div><strong style="color:var(--text-dim)">🔩 الحل:</strong> <span id="resSolution">-</span></div>
+                    <div id="aiInsight" style="background:rgba(59, 130, 246, 0.1); border:1px solid #3b82f6; padding:10px; border-radius:6px; display:none; margin-top:10px;">
+                        <strong style="color:#60a5fa">🤖 رؤية AI الذكية:</strong>
+                        <p id="aiTextContent" style="font-size:0.9rem; margin-top:5px; color:#e2e8f0;"></p>
+                    </div>
                 </div>
-            </div>
-            <div id="aiLoading" style="display:none; text-align:center; padding:20px; color:var(--primary);">
-                <div style="font-size:2rem; animation:spin 1s infinite linear;">⚙️</div>
-                <p>جاري تحليل البيانات الهندسية...</p>
             </div>
         </section>
 
@@ -242,35 +293,35 @@
                     <input type="number" id="bore" placeholder="قطر الاسطوانة (مم)">
                     <input type="number" id="stroke" placeholder="شوط المكبس (مم)" style="margin-top:10px;">
                     <input type="number" id="cylinders" placeholder="عدد الاسطوانات" style="margin-top:10px;">
-                    <button class="btn" style="width:100%; margin-top:15px;" onclick="calcEngineCC()">احسب</button>
-                    <div id="resEngine" class="result-box"></div>
+                    <button class="btn btn-secondary" style="width:100%; margin-top:15px;" onclick="calcEngineCC()">احسب</button>
+                    <div id="resEngine" class="result-box" style="margin-top:10px;"></div>
                 </div>
                 <div class="calc-item">
                     <h3>⛽ استهلاك الوقود</h3>
                     <input type="number" id="kmDriven" placeholder="المسافة (كم)">
                     <input type="number" id="litersFilled" placeholder="الوقود (لتر)" style="margin-top:10px;">
-                    <button class="btn" style="width:100%; margin-top:15px;" onclick="calcFuel()">احسب</button>
-                    <div id="resFuel" class="result-box"></div>
+                    <button class="btn btn-secondary" style="width:100%; margin-top:15px;" onclick="calcFuel()">احسب</button>
+                    <div id="resFuel" class="result-box" style="margin-top:10px;"></div>
                 </div>
                 <div class="calc-item">
                     <h3>⚪️ مقاس الإطارات</h3>
                     <input type="text" id="tireSize" placeholder="مثال: 205/55 R16">
-                    <button class="btn" style="width:100%; margin-top:15px;" onclick="calcTire()">عرض المواصفات</button>
-                    <div id="resTire" class="result-box"></div>
+                    <button class="btn btn-secondary" style="width:100%; margin-top:15px;" onclick="calcTire()">عرض المواصفات</button>
+                    <div id="resTire" class="result-box" style="margin-top:10px;"></div>
                 </div>
             </div>
         </section>
 
-        <!-- قسم الجدول (المصنف) -->
+        <!-- الجدول (تمت إزالة النص underneath) -->
         <section class="card">
-            <h2 class="section-title">📑 قاعدة بيانات الأكواد (مصنفة)</h2>
-            <div class="tabs" style="margin-bottom:15px; display:flex; gap:10px; overflow-x:auto; padding-bottom:5px;">
-                <button class="btn btn-secondary" onclick="filterTable('all', this)">الكل (World)</button>
-                <button class="btn btn-secondary" onclick="filterTable('American', this)">أمريكي 🇺🇸</button>
-                <button class="btn btn-secondary" onclick="filterTable('Japanese', this)">ياباني 🇯🇵</button>
-                <button class="btn btn-secondary" onclick="filterTable('German', this)">ألماني 🇩🇪</button>
-                <button class="btn btn-secondary" onclick="filterTable('Korean', this)">كوري 🇰🇷</button>
-                <button class="btn btn-secondary" onclick="filterTable('Chinese', this)">صيني 🇨🇳</button>
+            <h2 class="section-title">📑 قاعدة بيانات الأكواد</h2>
+            <div class="tabs" style="margin-bottom:15px; display:flex; gap:8px; overflow-x:auto; padding-bottom:5px; white-space:nowrap;">
+                <button class="btn btn-secondary" onclick="filterTable('all', this)" style="width:auto; padding: 8px 15px;">الكل</button>
+                <button class="btn btn-secondary" onclick="filterTable('American', this)" style="width:auto; padding: 8px 15px;">أمريكي 🇺🇸</button>
+                <button class="btn btn-secondary" onclick="filterTable('Japanese', this)" style="width:auto; padding: 8px 15px;">ياباني 🇯🇵</button>
+                <button class="btn btn-secondary" onclick="filterTable('German', this)" style="width:auto; padding: 8px 15px;">ألماني 🇩🇪</button>
+                <button class="btn btn-secondary" onclick="filterTable('Korean', this)" style="width:auto; padding: 8px 15px;">كوري 🇰🇷</button>
+                <button class="btn btn-secondary" onclick="filterTable('Chinese', this)" style="width:auto; padding: 8px 15px;">صيني 🇨🇳</button>
             </div>
             <div class="table-container">
                 <table id="codesTable">
@@ -280,35 +331,29 @@
                     <tbody id="tableBody"></tbody>
                 </table>
             </div>
-            <p style="text-align:center; padding:10px; color:var(--text-dim); font-size:0.8rem;">
-                * الجدول يعرض الأكواد الخاصة بكل شركة، بحث المتصفح في الأعلى يبحث في كامل القاعدة.
-            </p>
         </section>
 
     </div>
 
+    <!-- الفوتر والحقوق (تم تعديل المسافة والتنسيق) -->
     <footer>
-        <h3 style="color:var(--primary); font-weight:900; margin-bottom:10px;">تم التطوير بواسطة ابو عساف Hz</h3>
-        <div style="display:flex; justify-content:center; gap:15px; margin-top:15px;">
+        <span class="dev-name">تم التطوير بواسطة ابو عساف Hz</span>
+        <div style="display:flex; justify-content:center; gap:10px; margin-top:15px; flex-wrap:wrap;">
             <a href="https://snapchat.com/add/sww_p" target="_blank" class="social-link">Snapchat</a>
             <a href="https://instagram.com/sww_p" target="_blank" class="social-link">Instagram</a>
             <a href="https://twitter.com/sww_p" target="_blank" class="social-link">Twitter</a>
         </div>
-        <p style="margin-top:20px; font-size:0.8rem; color:#64748b;">&nbsp;© OBD Pro Tools 2026&nbsp;</p>
     </footer>
 
     <script>
         /* ==========================================
-           1. قاعدة البيانات (تنظيف وتقسيم دقيق)
+           1. قاعدة البيانات (مصنفة)
            ========================================== */
         let fullDatabase = [];
         function addCode(c, m, ca, s, b, o) {
             fullDatabase.push({ code: c, meaning: m, cause: ca, solution: s, brand: b, origin: o });
         }
 
-        // --- قائمة الأكواد اليدوية والمصنفة ---
-        
-        // 1. أمريكي (American) - Ford, GM, Chrysler, Dodge
         const americanCodes = [
             {c: "P0171", m: "نظام الوقود ضعيف جداً (Bank 1)", ca: "تسريب هواء، أنبوب MAF", s: "فحص خراطيم التهوية", b: "Ford", o: "American"},
             {c: "P0172", m: "نظام الوقود غني جداً (Bank 1)", ca: "ضغط وقود عالي، Regulator", s: "فحص منظم ضغط الوقود", b: "GM", o: "American"},
@@ -318,156 +363,162 @@
             {c: "P0410", m: "نظام الضخ الثانوي (AIR)", ca: "مضخة هواء، صمام", s: "فحص المضخة", b: "GM", o: "American"},
             {c: "P0133", m: "استجابة حساس O2 بطيئة", ca: "حساس O2 قديم", s: "تغيير الحساس", b: "Ford", o: "American"},
             {c: "P0440", m: "عطل عام في نظام Evap", ca: "غطاء بنزين، خرطوم", s: "فحص نظام الوقود", b: "Chrysler", o: "American"},
-            {c: "P0442", m: "تسريب صغير في نظام Evap", ca: "خرطوم محترق", s: "فحص بالدخان", b: "GM", o: "American"},
             {c: "P0455", m: "تسريب كبير في نظام Evap", ca: "غطاء الخزان مفقود", s: "تأكد من الغطاء", b: "Dodge", o: "American"},
-            {c: "P0500", m: "إشارة حساس سرعة السيارة", ca: "VSS تالف", s: "فحص الحساس", b: "GM", o: "American"},
-            {c: "P0601", m: "خطأ ذاكرة وحدة التحكم", ca: "PCM تالف", s: "إعادة برمجة أو تبديل", b: "Chrysler", o: "American"},
-            {c: "P1289", m: "مفتاح ICP عالي / منخفض", ca: "ضغط زيت حقن", s: "فحص ICP Sensor", b: "Powerstroke", o: "American"}
+            {c: "P0601", m: "خطأ ذاكرة وحدة التحكم", ca: "PCM تالف", s: "إعادة برمجة أو تبديل", b: "Chrysler", o: "American"}
         ];
 
-        // 2. كوري (Korean) - Hyundai, Kia, SsangYong
         const koreanCodes = [
             {c: "P2096", m: "استجابة خلف المحفاز ضعيفة (Bank 1)", ca: "حساس O2 خلفي", s: "فحص الحساس", b: "Hyundai", o: "Korean"},
             {c: "P0101", m: "نطاق/أداء MAF", ca: "سلك توصيل، حساس متسخ", s: "فحص التوصيلات", b: "Kia", o: "Korean"},
             {c: "P0171", m: "نظام الوقود ضعيف جداً (Bank 1)", ca: "تسريب فراغ في المشعب", s: "فحص المشعب", b: "Hyundai", o: "Korean"},
             {c: "P0174", m: "نظام الوقود ضعيف (Bank 2)", ca: "تسريب هواء", s: "فحص المشعب", b: "Hyundai", o: "Korean"},
-            {c: "P0175", m: "نظام الوقود غني جداً (Bank 2)", ca: "تسريب حقن", s: "فحص الحاقنات", b: "Kia", o: "Korean"},
             {c: "P0128", m: "حرارة المبرد أقل من الحد", ca: "ترموستات مفتوح", s: "تغيير الترموستات", b: "Hyundai", o: "Korean"},
-            {c: "P0300", m: "إشعال عشوائي", ca: "ملفات إشعال", s: "فحص الملفات", b: "Kia", o: "Korean"},
-            {c: "P2187", m: "نظام ضعيف جداً عند الخمول", ca: "تسريب فراغ", s: "فحص المشعب", b: "SsangYong", o: "Korean"},
             {c: "P1606", m: "طلب إنارة المحرك (MIL)", ca: "عطل ECU", s: "فحص ECU", b: "Hyundai", o: "Korean"}
         ];
 
-        // 3. صيني (Chinese) - Geely, Chery, Haval, MG
         const chineseCodes = [
             {c: "P1607", m: "خطأ في ذاكرة ECU (Internal)", ca: "برمجة", s: "فلاش برامج", b: "Geely", o: "Chinese"},
             {c: "P2187", m: "نظام ضعيف جداً عند الخمول", ca: "تسريب فراغ", s: "فحص المشعب", b: "Chery", o: "Chinese"},
             {c: "P050B", m: "إشعال بارد (Cold Start)", ca: "شمعات أو وقود", s: "تغيير الشمعات", b: "MG", o: "Chinese"},
             {c: "P1112", m: "حساس درجة حرارة الهواء (IAT) عالي", ca: "تماس كهربائي", s: "فحص السلك", b: "Haval", o: "Chinese"},
-            {c: "P0128", m: "حرارة مبرد منخفضة", ca: "ترموستات", s: "تغيير الترموستات", b: "BYD", o: "Chinese"},
-            {c: "P0300", m: "إشعال عشوائي", ca: "شمعات، ملفات", s: "نظام الإشعال", b: "Geely", o: "Chinese"},
-            {c: "P0171", m: "نظام الوقود ضعيف جداً", ca: "تسريب هواء", s: "فحص الخراطيم", b: "Chery", o: "Chinese"},
-            {c: "P0172", m: "نظام الوقود غني جداً", ca: "ضغط وقود", s: "فحص Pump الوقود", b: "Brilliance", o: "Chinese"},
-            {c: "P0420", m: "كفاءة المحفاز ضعيفة", ca: "حساس أو محفاز", s: "فحص العادم", b: "Chery", o: "Chinese"}
+            {c: "P0128", m: "حرارة مبرد منخفضة", ca: "ترموستات", s: "تغيير الترموستات", b: "BYD", o: "Chinese"}
         ];
 
-        // 4. ياباني (Japanese) - Toyota, Honda, Nissan, Mazda
         const japaneseCodes = [
             {c: "P0171", m: "نظام الوقود ضعيف جداً", ca: "تسريب هواء", s: "فحص خراطيم التهوية", b: "Toyota", o: "Japanese"},
-            {c: "P0172", m: "نظام الوقود غني جداً", ca: "حساس MAF", s: "فحص الحساس", b: "Lexus", o: "Japanese"},
             {c: "P0340", m: "إشارة حساس موضع العمود المرفقي", ca: "حساس CMP", s: "تبديل الحساس", b: "Nissan", o: "Japanese"},
             {c: "P0300", m: "إشعال عشوائي", ca: "شمعات، ملفات", s: "فحص الإشعال", b: "Honda", o: "Japanese"},
             {c: "P2647", m: "عطل محرك VTEC", ca: "ضغط زيت VTEC", s: "فحص سولينويد VTEC", b: "Honda", o: "Japanese"},
-            {c: "P0440", m: "عطل عام في نظام Evap", ca: "غطاء بنزين، خرطوم", s: "فحص النظام", b: "Toyota", o: "Japanese"},
-            {c: "P0446", m: "صمام تهوية Evap مشغول طويلاً", ca: "صمام VSV", s: "فحص الصمام", b: "Toyota", o: "Japanese"},
-            {c: "P0128", m: "حرارة المبرد منخفضة", ca: "ترموستات", s: "تغيير الترموستات", b: "Toyota", o: "Japanese"},
-            {c: "P0174", m: "نظام الوقود ضعيف (Bank 2)", ca: "تسريب هواء", s: "فحص الفراغ", b: "Mazda", o: "Japanese"},
-            {c: "P0365", m: "إشارة حساس موضع الكامشفت B", ca: "حساس CMP", s: "فحص الحساس", b: "Nissan", o: "Japanese"},
-            {c: "P0301", m: "إشعال أسطوانة 1", ca: "ملف إشعال", s: "تبديل الملف", b: "Honda", o: "Japanese"}
+            {c: "P0446", m: "صمام تهوية Evap مشغول طويلاً", ca: "صمام VSV", s: "فحص الصمام", b: "Toyota", o: "Japanese"}
         ];
 
-        // 5. ألماني (German) - BMW, Mercedes, VW, Audi
         const germanCodes = [
             {c: "P0017", m: "عدم تطابق موضع العمود المرفقي/الحدافة", ca: "توقيت الكامات (Vanos)", s: "فحص سلسلة التوقيت", b: "BMW", o: "German"},
             {c: "P0299", m: "ضغط التيربو منخفض", ca: "توربين تالف، أنابيب مفصولة", s: "فحص التيربو", b: "VW/Audi", o: "German"},
             {c: "P2002", m: "فلتر الجسيمات (DPF) كفاءته تحت الحد", ca: "تنظيف أو تغيير DPF", s: "Regeneration", b: "Mercedes", o: "German"},
-            {c: "P0305", m: "إشعال أسطوانة 5", ca: "ملف Coil رقم 5", s: "تبديل الملف", b: "BMW", o: "German"},
-            {c: "P0411", m: "تدفق هواء ثانوي غير صحيح", ca: "مضخة الهواء الثانوية", s: "فحص المضخة والصمامات", b: "Audi", o: "German"},
-            {c: "P0456", m: "تسريب صغير جداً في نظام Evap", ca: "غطاء بنزين", s: "تأكد من الغطاء", b: "Mercedes", o: "German"},
-            {c: "P0500", m: "حساس سرعة السيارة", ca: "حساس ABS/Speed", s: "فحص الحساس", b: "VW", o: "German"},
-            {c: "P069E", m: "طلب تشغيل إضاءة المحرك", ca: "ECU fault", s: "فحص الـ ECU", b: "BMW", o: "German"}
+            {c: "P0411", m: "تدفق هواء ثانوي غير صحيح", ca: "مضخة الهواء الثانوية", s: "فحص المضخة والصمامات", b: "Audi", o: "German"}
         ];
 
-        // دمج كل المصفوفات في مصفوفة واحدة
         const specificCodes = [
             ...americanCodes, ...koreanCodes, ...chineseCodes, ...japaneseCodes, ...germanCodes
         ];
 
-        // إضافتها لقاعدة البيانات الرئيسية
-        specificCodes.forEach(item => {
-            addCode(item.c, item.m, item.ca, item.s, item.b, item.o);
-        });
+        specificCodes.forEach(item => addCode(item.c, item.m, item.ca, item.s, item.b, item.o));
 
-        // توليد الأكواد العامة (Global Standards) للبحث فقط
-        // لن نظهرها في الجدول المُصنّف
         for (let i = 100; i <= 799; i++) {
-            let sys = "نظام عام";
-            if(i >= 100 && i <= 199) sys = "قياس الهواء والوقود";
-            if(i >= 300 && i <= 399) sys = "نظام الإشعال";
-            if(i >= 400 && i <= 499) sys = "انبعاثات السيارة";
-            if(i >= 700 && i <= 799) sys = "ناقل الحركة";
-
-            let codeStr = "P" + i;
-            if (!specificCodes.some(x => x.c === codeStr)) {
-                // نخزنها بـ "All" لتظهر فقط عند البحث العام، وليس في التصنيفات الخاصة
-                addCode(codeStr, "عطل في " + sys, "دائرة كهربائية عامة", "فحص الدوائر الكهربائية", "Generic SAE", "All");
+            if (!specificCodes.some(x => x.c === "P"+i)) {
+                addCode("P"+i, "عطل عام في النظام", "دائرة كهربائية أو حساس", "فحص الدوائر", "Generic", "All");
             }
         }
 
         /* ==========================================
-           2. منطق البحث والعرض
+           2. الذكاء الاصطناعي المحاكي (Smart AI Logic)
            ========================================== */
+        function smartAIAnalyze() {
+            const input = document.getElementById('codeInput').value.trim().toUpperCase();
+            const aiLoading = document.getElementById('aiLoading');
+            const resultCard = document.getElementById('resultCard');
+            const errorMsg = document.getElementById('errorMsg');
+            const steps = [document.getElementById('step1'), document.getElementById('step2'), document.getElementById('step3'), document.getElementById('step4')];
+
+            if (!input) { alert("الرجاء إدخال الكود أولاً"); return; }
+            
+            resultCard.classList.remove('active');
+            errorMsg.style.display = 'none';
+            aiLoading.style.display = 'block';
+            steps.forEach(s => s.classList.remove('active'));
+
+            setTimeout(() => steps[0].classList.add('active'), 500);
+            setTimeout(() => steps[1].classList.add('active'), 1500);
+            setTimeout(() => steps[2].classList.add('active'), 2500);
+            setTimeout(() => {
+                steps[3].classList.add('active');
+                aiLoading.style.display = 'none';
+                generateSmartResult(input);
+            }, 3500);
+        }
+
+        function generateSmartResult(input) {
+            const dbResult = fullDatabase.find(c => c.code === input);
+            
+            const firstChar = input.charAt(0);
+            const system = firstChar === 'P' ? "Powertrain (محرك/ناقل)" : 
+                           firstChar === 'C' ? "Chassis (شاصي/فرامل)" : 
+                           firstChar === 'B' ? "Body (هيكل/كهرباء)" : 
+                           firstChar === 'U' ? "Network (شبكة اتصال)" : "غير معروف";
+            
+            const secondChar = input.charAt(1);
+            const type = secondChar === '0' ? "قياسي عام (Generic)" : "خاص بالشركة المصنعة (Manufacturer Specific)";
+
+            let aiInsightText = "";
+            
+            if (dbResult) {
+                aiInsightText = `تم تأكيد الكود في قاعدة البيانات. هذا الكود من النوع (${type}). العطل يقع في نظام (${system}). يوصى الذكاء الاصطناعي بالتحقق من التوصيلات الكهربائية (Connectors) قبل تغيير القطع الغالية، حيث أن 40% من هذه الأعطال تكون مجرد كابل مفصول أو موصل متأكل.`;
+            } else {
+                if (firstChar === 'P') {
+                    const thirdChar = parseInt(input.charAt(2));
+                    let subSystem = "";
+                    if(thirdChar === 0 || thirdChar === 1) subSystem = "نظام الهواء والوقود (Fuel/Air Metering)";
+                    else if(thirdChar === 2) subSystem = "نظام حقن الوقود (Injector Circuit)";
+                    else if(thirdChar === 3) subSystem = "نظام الإشعال (Ignition System)";
+                    else if(thirdChar === 4) subSystem = "نظام الانبعاثات (Auxiliary Emissions)";
+                    else if(thirdChar === 5) subSystem = "السرعة والخمول (Vehicle Speed/Idle)";
+                    else if(thirdChar === 6) subSystem = "وحدة التحكم الإلكترونية (Computer Output)";
+                    else if(thirdChar === 7) subSystem = "ناقل الحركة (Transmission)";
+                    
+                    aiInsightText = `الكود غير موجود في القائمة المباشرة، لكن التحليل الهيكلي يشير إلى مشكلة في: <strong>${subSystem}</strong>. بما أن الكود يبدأ بـ ${firstChar}${secondChar}، فهو ${type}. يرجى التركيز على حساسات هذا النظام ووحدة التشغيل (Relays).`;
+                } else {
+                    aiInsightText = `تحليل النظام يشير إلى مشكلة في نظام (${system}). يرجى مراجعة الدائرة الكهربائية لهذا الجزء والتحقق من الصمامات (Fuses).`;
+                }
+            }
+
+            displayResult(input, dbResult, aiInsightText);
+        }
+
+        function displayResult(code, data, aiText) {
+            document.getElementById('resCode').textContent = code;
+            
+            if (data) {
+                document.getElementById('resBrand').textContent = data.brand;
+                document.getElementById('resMeaning').textContent = data.meaning;
+                document.getElementById('resCause').textContent = data.cause;
+                document.getElementById('resSolution').textContent = data.solution;
+            } else {
+                document.getElementById('resBrand').textContent = "تحليل AI";
+                document.getElementById('resMeaning').textContent = "عطل غير موثق (تحليل هيكلي)";
+                document.getElementById('resCause').textContent = "تحليل الذكاء الاصطناعي: انظر للرؤية الذكية بالأسفل";
+                document.getElementById('resSolution').textContent = "اتبع خطوات الفحص المقترحة من الذكاء الاصطناعي";
+            }
+
+            document.getElementById('aiInsight').style.display = 'block';
+            document.getElementById('aiTextContent').innerHTML = aiText;
+            document.getElementById('resultCard').classList.add('active');
+        }
+
         function searchCode() {
             const input = document.getElementById('codeInput').value.trim().toUpperCase();
             const errorMsg = document.getElementById('errorMsg');
             const resultCard = document.getElementById('resultCard');
-            const aiLoading = document.getElementById('aiLoading');
+            const aiInsight = document.getElementById('aiInsight');
 
             if (!input) return;
             
             resultCard.classList.remove('active');
             errorMsg.style.display = 'none';
+            aiInsight.style.display = 'none';
 
             const result = fullDatabase.find(c => c.code === input);
 
             if (result) {
-                document.getElementById('resCode').textContent = result.code;
-                document.getElementById('resBrand').textContent = result.brand;
-                document.getElementById('resMeaning').textContent = result.meaning;
-                document.getElementById('resCause').textContent = result.cause;
-                document.getElementById('resSolution').textContent = result.solution;
-                resultCard.classList.add('active');
+                displayResult(result.code, result, null);
             } else {
-                errorMsg.innerHTML = `لم يتم العثور على الكود <b>${input}</b> في قاعدة البيانات.`;
+                errorMsg.innerHTML = `لم يتم العثور على الكود <b>${input}</b>. جرب زر "تحليل AI ذكي".`;
                 errorMsg.style.display = 'block';
             }
         }
 
-        function aiAnalyze() {
-            const input = document.getElementById('codeInput').value.trim().toUpperCase();
-            const aiLoading = document.getElementById('aiLoading');
-            const resultCard = document.getElementById('resultCard');
-            const errorMsg = document.getElementById('errorMsg');
-
-            if (!input) { alert("أدخل الكود أولاً"); return; }
-            
-            resultCard.classList.remove('active');
-            errorMsg.style.display = 'none';
-            aiLoading.style.display = 'block';
-
-            setTimeout(() => {
-                aiLoading.style.display = 'none';
-                const result = fullDatabase.find(c => c.code === input);
-                if (result) {
-                    document.getElementById('resCode').textContent = result.code + " (AI Verified)";
-                    document.getElementById('resBrand').textContent = result.brand + " - تم التحقق";
-                    document.getElementById('resMeaning').textContent = result.meaning;
-                    document.getElementById('resCause').textContent = result.cause;
-                    document.getElementById('resSolution').textContent = result.solution + ". [AI Tip]: تحقق من التوصيلات قبل تغيير القطع.";
-                    resultCard.classList.add('active');
-                } else {
-                     document.getElementById('resCode').textContent = input;
-                    document.getElementById('resBrand').textContent = "Unknown / Generic";
-                    document.getElementById('resMeaning').textContent = "كود غير موثق، يبدو أنه خاص بالشركة المصنعة.";
-                    document.getElementById('resCause').textContent = "غير معروف بدقة.";
-                    document.getElementById('resSolution').textContent = "يرجى مراجعة الورشة المختصة لهذا الكود.";
-                    resultCard.classList.add('active');
-                }
-            }, 1500);
-        }
-
         /* ==========================================
-           3. أدوات الحساب (Calculators)
+           3. أدوات الحساب
            ========================================== */
         function calcEngineCC() {
             const bore = parseFloat(document.getElementById('bore').value);
@@ -478,7 +529,7 @@
             const radius = bore / 2;
             const totalVolume = (Math.PI * Math.pow(radius, 2) * stroke * cylinders) / 1000;
             resBox.innerHTML = `<strong>النتيجة:</strong> ${totalVolume.toFixed(0)} CC`;
-            resBox.classList.add('active');
+            resBox.style.display = 'block';
         }
 
         function calcFuel() {
@@ -489,7 +540,7 @@
             const kmPerLiter = km / liters;
             const litersPer100km = (liters / km) * 100;
             resBox.innerHTML = `<strong>النتيجة:</strong> ${kmPerLiter.toFixed(1)} كم/لتر | ${litersPer100km.toFixed(1)} لتر/100كم`;
-            resBox.classList.add('active');
+            resBox.style.display = 'block';
         }
 
         function calcTire() {
@@ -498,7 +549,7 @@
             const match = input.match(/(\d{2,3})\/(\d{2,3})[Rr](\d{2,3})/);
             if (!match) {
                 resBox.innerHTML = "الصيغة غير صحيحة (مثال: 205/55 R16)";
-                resBox.classList.add('active');
+                resBox.style.display = 'block';
                 return;
             }
             const width = parseInt(match[1]);
@@ -506,18 +557,16 @@
             const rim = parseInt(match[3]);
             const diameterMM = (rim * 25.4) + ((width * profile / 100) * 2);
             const circumferenceCM = (diameterMM * Math.PI) / 10;
-            resBox.innerHTML = `<strong>المحيط:</strong> ${circumferenceCM.toFixed(0)} سم | <strong>القطر:</strong> ${(diameterMM/25.4).toFixed(1)} بوصة`;
-            resBox.classList.add('active');
+            resBox.innerHTML = `<strong>المحيط:</strong> ${circumferenceCM.toFixed(0)} سم`;
+            resBox.style.display = 'block';
         }
 
         /* ==========================================
-           4. الجدول (Logic)
+           4. الجدول
            ========================================== */
         function renderTable(filterOrigin = 'all') {
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
-            
-            // الفلترة تبحث فقط في specificCodes وليس في القاعدة العامة لتجنب التخليط
             let data = specificCodes;
 
             if (filterOrigin !== 'all') {
@@ -525,7 +574,7 @@
             }
 
             if(data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">لا توجد أكواد مخصصة لهذه الفئة في القائمة الحالية.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">لا توجد أكواد مخصصة لهذه الفئة.</td></tr>';
                 return;
             }
 
@@ -541,21 +590,18 @@
         }
 
         function filterTable(origin, btn) {
-            document.querySelectorAll('.tabs .btn').forEach(b => b.classList.remove('active'));
-            // إضافة ستايل بسيط للزر النشط
+            document.querySelectorAll('.tabs .btn').forEach(b => {
+                b.style.background = '#334155'; 
+                b.style.color = '#fff';
+            });
             btn.style.background = 'var(--primary)';
             btn.style.color = '#000';
             renderTable(origin);
         }
 
-        window.onload = function() {
-            renderTable();
-        };
-        
-        document.getElementById('codeInput').addEventListener('keyup', function(e) {
-            if(e.key === 'Enter') searchCode();
-        });
+        window.onload = function() { renderTable(); };
+        document.getElementById('codeInput').addEventListener('keyup', function(e) { if(e.key === 'Enter') searchCode(); });
 
     </script>
-
-</body></html>
+</body>
+</html>
