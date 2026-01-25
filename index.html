@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#0f172a">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3209/3209995.png">
 
-    <title>PRO MECHANIC | النظام الشامل</title>
+    <title>PRO MECHANIC | AI SYSTEM</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
     
     <style>
@@ -101,8 +101,25 @@
         /* Results */
         #resultCard { display: none; margin-top: 20px; animation: slideUp 0.5s ease; }
         .the-code { font-size: 3.5rem; font-weight: 900; color: var(--primary); line-height: 1; text-shadow: 0 0 30px rgba(255, 107, 0, 0.4); text-align: center; }
-        .ai-box { background: rgba(99, 102, 241, 0.08); border: 1px dashed var(--accent); padding: 20px; border-radius: 16px; margin-top: 20px; display: none; }
-
+        
+        /* AI Box Styles */
+        .ai-box { 
+            background: rgba(99, 102, 241, 0.08); border: 1px dashed var(--accent); 
+            padding: 20px; border-radius: 16px; margin-top: 20px; display: none; position: relative;
+        }
+        /* AI Pulse Animation */
+        .ai-active {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+        .ai-loader {
+            display: none; text-align: center; color: var(--accent); margin-top: 10px;
+        }
+        .radar-scan {
+            width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: radar 1.5s infinite;
+        }
+        
         /* Footer */
         footer { text-align: center; margin-top: 50px; border-top: 1px solid var(--border); padding-top: 30px; color: #64748b; }
         .social-container { display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
@@ -117,6 +134,11 @@
         .twitter { background: #1DA1F2; }
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes radar { 0% { transform: translateX(-100%); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateX(100%); opacity: 0; } }
+        /* تأثير الكتابة */
+        @keyframes blink { 50% { opacity: 0; } }
+        .cursor { display: inline-block; width: 6px; height: 16px; background: var(--accent); animation: blink 1s infinite; vertical-align: middle; margin-right: 5px; }
+
     </style>
 </head>
 <body>
@@ -157,6 +179,11 @@
 
             <div style="margin-top:15px; overflow-x:auto; white-space:nowrap; padding-bottom:5px;" id="historyList"></div>
 
+            <div id="aiLoading" class="ai-loader">
+                <div>جاري الاتصال بقاعدة بيانات الذكاء الاصطناعي...</div>
+                <div class="radar-scan"></div>
+            </div>
+
             <div id="resultCard">
                 <div class="the-code" id="resCode">P0000</div>
                 <div style="text-align:center; color:#94a3b8; margin-bottom:15px;" id="resSystem">Unknown System</div>
@@ -169,7 +196,7 @@
 
                 <div id="aiPanel" class="ai-box">
                     <strong style="color:var(--accent);">💡 استشارة الذكاء الاصطناعي:</strong>
-                    <p id="aiText" style="margin-top:8px; line-height:1.6; color:#e2e8f0; font-size:0.95rem;">-</p>
+                    <p id="aiText" style="margin-top:8px; line-height:1.6; color:#e2e8f0; font-size:0.95rem; min-height:40px;"></p>
                 </div>
 
                 <a href="#" id="waLink" target="_blank" style="display:block; text-align:center; background:#25D366; color:#fff; padding:15px; border-radius:16px; margin-top:20px; text-decoration:none; font-weight:bold;">📤 مشاركة التقرير (واتساب)</a>
@@ -185,11 +212,9 @@
                 <input type="text" id="vinInput" maxlength="17" placeholder="أدخل رقم الشاصي (17 خانة)" style="letter-spacing: 2px; text-transform: uppercase;">
             </div>
             <button class="btn-ghost" onclick="decodeVIN()" style="width: 100%;">تحليل الرقم</button>
-            
             <div id="vinResult" class="vin-result">
                 <div style="margin-bottom: 5px;"><span class="vin-tag">البلد</span> <strong id="vinCountry">-</strong></div>
-                <div style="margin-bottom: 5px;"><span class="vin-tag">السنة</span> <strong id="vinYear">-</strong></div>
-                <div><span class="vin-tag">الحالة</span> <strong style="color:var(--success)">رقم صحيح (Valid Format)</strong></div>
+                <div><span class="vin-tag">السنة</span> <strong id="vinYear">-</strong></div>
             </div>
         </section>
 
@@ -198,14 +223,12 @@
                 <div class="icon-box">⚖️</div>
                 <h2>محولات الوحدات</h2>
             </div>
-            
-            <h3 style="color:var(--primary); font-size:1rem; margin-bottom:10px;">🔧 تحويل العزم (Torque)</h3>
+            <h3 style="color:var(--primary); font-size:1rem; margin-bottom:10px;">🔧 تحويل العزم</h3>
             <div class="converter-grid">
                 <div><span class="unit-label">Nm</span><input type="number" id="nmInput" class="conv-input" placeholder="0" oninput="convertTorque('nm')"></div>
                 <div><span class="unit-label">ft-lb</span><input type="number" id="ftlbInput" class="conv-input" placeholder="0" oninput="convertTorque('ftlb')"></div>
             </div>
-
-            <h3 style="color:var(--primary); font-size:1rem; margin-bottom:10px; border-top:1px solid var(--border); padding-top:10px;">💨 ضغط الهواء (Pressure)</h3>
+            <h3 style="color:var(--primary); font-size:1rem; margin-bottom:10px; border-top:1px solid var(--border); padding-top:10px;">💨 ضغط الهواء</h3>
             <div class="converter-grid">
                 <div><span class="unit-label">PSI</span><input type="number" id="psiInput" class="conv-input" placeholder="0" oninput="convertPressure('psi')"></div>
                 <div><span class="unit-label">Bar</span><input type="number" id="barInput" class="conv-input" placeholder="0" oninput="convertPressure('bar')"></div>
@@ -217,17 +240,18 @@
                 <div class="icon-box">📝</div>
                 <h2>مفكرة الميكانيكي</h2>
             </div>
-            <textarea id="myNotes" class="notes-area" placeholder="اكتب ملاحظاتك هنا (سيتم حفظها تلقائياً)... مثال: موعد تغيير زيت للزبون محمد" oninput="saveNotes()"></textarea>
+            <textarea id="myNotes" class="notes-area" placeholder="ملاحظاتك هنا..." oninput="saveNotes()"></textarea>
             <div style="text-align:left; font-size:0.8rem; color:var(--success); margin-top:5px;">✅ يتم الحفظ تلقائياً</div>
         </section>
 
-        <section class="card">
+        <section class="card" id="toolsSection">
             <div class="section-head">
                 <div class="icon-box">🧮</div>
                 <h2>أدوات & أكواد</h2>
             </div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
-                <button class="btn-ghost" onclick="renderTable('all')">📚 عرض كل الأكواد</button>
+                <button class="btn-ghost" onclick="showAllCodes()">📚 عرض كل الأكواد</button>
+                
                 <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:12px; text-align:center;">
                     <div style="font-size:0.8rem; color:var(--accent);">حاسبة المكينة</div>
                     <div style="display:flex; gap:2px; margin-top:5px;">
@@ -240,7 +264,7 @@
                 </div>
             </div>
             
-            <div style="overflow-x:auto; max-height:250px;">
+            <div id="tableContainer" style="overflow-x:auto; max-height:250px; scroll-behavior:smooth;">
                 <table style="width:100%; text-align:right; border-collapse:collapse;">
                     <thead><tr style="color:var(--primary); position:sticky; top:0; background:var(--glass);"><th style="padding:10px;">الكود</th><th>الوصف</th></tr></thead>
                     <tbody id="tableBody"></tbody>
@@ -271,7 +295,7 @@
         let db = [];
         function add(c, m, f, sys, b) { if(!db.some(x=>x.c===c)) db.push({c, m, f, sys, b}); }
 
-        // 1. Data Population
+        // Data
         add("P0101", "أداء حساس MAF", "تنظيف الحساس", "Air", "All");
         add("P0171", "خليط فقير (Lean)", "فحص تهريب هواء", "Fuel", "All");
         add("P0300", "فقد إشعال (Misfire)", "بواجي / كويلات", "Ignition", "All");
@@ -283,30 +307,37 @@
             let c="P0"+i;
             if(!db.some(x=>x.c===c)) {
                 let sys="General";
-                if(i<200) sys="Fuel/Air";
-                else if(i<300) sys="Injection";
-                else if(i<400) sys="Ignition";
-                else if(i<500) sys="Emission";
-                else if(i<600) sys="Speed";
-                else if(i<700) sys="ECU";
-                else sys="Trans";
+                if(i<200) sys="Fuel/Air"; else if(i<300) sys="Injection"; else if(i<400) sys="Ignition"; 
+                else if(i<500) sys="Emission"; else if(i<600) sys="Speed"; else if(i<700) sys="ECU"; else sys="Trans";
                 add(c, "عطل في نظام "+sys, "فحص الدائرة الكهربائية", sys, "Generic");
             }
         }
         document.getElementById('dbStatus').innerText = "النظام جاهز: "+db.length+" كود";
 
-        // 2. Diagnostics
+        // --- SCANNING LOGIC ---
         function performScan(isAI) {
             let input = document.getElementById('codeInput').value.toUpperCase().trim();
             let brand = document.getElementById('carBrand').value;
             let card = document.getElementById('resultCard');
+            let loader = document.getElementById('aiLoading');
             
             if(!input) { alert("أدخل الكود!"); return; }
-            card.style.display = "none";
             
+            card.style.display = "none";
+            document.getElementById('aiPanel').style.display = "none";
+            document.getElementById('aiText').innerHTML = ""; // Reset text
+
             if(isAI) {
+                // Show Loader
+                loader.style.display = "block";
                 document.getElementById('dbStatus').innerText = "جاري التحليل...";
-                setTimeout(() => { showResult(input, brand, true); document.getElementById('dbStatus').innerText = "تم التحليل"; }, 1500);
+                
+                // Simulate delay
+                setTimeout(() => { 
+                    loader.style.display = "none";
+                    showResult(input, brand, true); 
+                    document.getElementById('dbStatus').innerText = "تم التحليل"; 
+                }, 2000);
             } else {
                 showResult(input, brand, false);
             }
@@ -320,7 +351,7 @@
             document.getElementById('resCode').innerText = code;
             document.getElementById('resSystem').innerText = displayBrand + " System";
 
-            // Add History Chip
+            // History
             let hist = document.getElementById('historyList');
             let chip = document.createElement('span');
             chip.style.cssText = "background:rgba(255,255,255,0.1); padding:5px 15px; border-radius:20px; margin-right:5px; color:#ccc; cursor:pointer; display:inline-block;";
@@ -338,34 +369,58 @@
                 document.getElementById('resFix').innerText = "فحص دليل المصنع";
             }
 
-            let aiPanel = document.getElementById('aiPanel');
             if(isAI) {
+                let aiPanel = document.getElementById('aiPanel');
                 aiPanel.style.display = "block";
-                let t = `تحليل الذكاء للكود ${code} (${brand}):\n`;
-                if(code.startsWith("P03")) t+="مشكلة إشعال. ابدأ بتبديل الكويلات (Swapping).";
-                else if(code.startsWith("P017")) t+="مشكلة خليط وقود. افحص تهريب الهواء (Vacuum).";
-                else if(code.startsWith("P07")) t+="مشكلة قير. افحص الزيت أولاً.";
-                else t+="يرجى فحص الفيوزات والأسلاك قبل استبدال القطع.";
-                document.getElementById('aiText').innerText = t;
-            } else {
-                aiPanel.style.display = "none";
+                aiPanel.classList.add('ai-active'); // Add glow
+                
+                let textToType = `تحليل الذكاء للكود ${code} في سيارة (${brand}):\n`;
+                if(code.startsWith("P03")) textToType += "تم رصد مشكلة إشعال. يوصى بتبديل الكويلات (Swapping) لتحديد مصدر العطل.";
+                else if(code.startsWith("P017")) textToType += "مشكلة في خليط الوقود. غالباً بسبب تهريب هواء (Vacuum Leak) غير مرئي.";
+                else if(code.startsWith("P07")) textToType += "مشكلة في القير. يرجى فحص جودة الزيت قبل أي إجراء.";
+                else textToType += "العطل غالباً كهربائي. تأكد من الفيوزات والتوصيلات قبل الاستبدال.";
+
+                // تشغيل تأثير الكتابة
+                typeWriterEffect(textToType, 'aiText');
             }
         }
 
-        // دالة جديدة لتعبئة الكود والصعود للأعلى
+        // --- Typewriter Effect ---
+        function typeWriterEffect(text, elementId) {
+            let i = 0;
+            let speed = 30; // سرعة الكتابة
+            let elem = document.getElementById(elementId);
+            elem.innerHTML = "<span class='cursor'></span>"; // Add cursor
+            
+            function type() {
+                if (i < text.length) {
+                    elem.innerHTML = text.substring(0, i+1) + "<span class='cursor'></span>";
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
         function loadCodeFromClick(code) {
             document.getElementById('codeInput').value = code;
-            // الصعود لقسم الفحص
             document.getElementById('diagnosticSection').scrollIntoView({behavior: 'smooth'});
-            // تشغيل الفحص
             performScan(false);
         }
 
-        // 3. New Features
-        function saveNotes() {
-            localStorage.setItem('mechanic_notes', document.getElementById('myNotes').value);
+        // --- FIX: Show All Codes Function ---
+        function showAllCodes() {
+            renderTable('all');
+            // النزول تلقائياً للجدول
+            let tableSection = document.getElementById('tableContainer');
+            tableSection.scrollIntoView({behavior: 'smooth'});
+            // وميض بسيط لتنبيه المستخدم
+            tableSection.style.border = "2px solid var(--primary)";
+            setTimeout(() => { tableSection.style.border = "none"; }, 1000);
         }
-        
+
+        // --- Other Features ---
+        function saveNotes() { localStorage.setItem('mechanic_notes', document.getElementById('myNotes').value); }
         function decodeVIN() {
             let vin = document.getElementById('vinInput').value.toUpperCase();
             if(vin.length !== 17) { alert("رقم الهيكل يجب أن يكون 17 خانة"); return; }
@@ -375,18 +430,11 @@
             else if('J'.includes(c1)) country="اليابان (Japan)";
             else if('K'.includes(c1)) country="كوريا (Korea)";
             else if('W'.includes(c1)) country="ألمانيا (Germany)";
-            let yearChar = vin.charAt(9);
-            let year = "20XX"; 
-            if(yearChar === 'L') year = "2020";
-            if(yearChar === 'M') year = "2021";
-            if(yearChar === 'N') year = "2022";
-            if(yearChar === 'P') year = "2023";
             document.getElementById('vinResult').style.display = "block";
             document.getElementById('vinCountry').innerText = country;
-            document.getElementById('vinYear').innerText = year;
+            document.getElementById('vinYear').innerText = "20"+vin.charAt(9)+"X (تقديري)";
         }
 
-        // 4. Converters
         function convertTorque(type) {
             let nm = document.getElementById('nmInput');
             let ft = document.getElementById('ftlbInput');
@@ -399,8 +447,6 @@
             if(type === 'psi') bar.value = (psi.value * 0.0689).toFixed(2);
             else psi.value = (bar.value * 14.5038).toFixed(1);
         }
-
-        // 5. Calcs & Table
         function calcCC() {
             let b = document.getElementById('boreInput').value;
             let s = document.getElementById('strokeInput').value;
@@ -411,13 +457,11 @@
         function renderTable(f) {
             let tb = document.getElementById('tableBody'); tb.innerHTML="";
             let d = f==='all'?db:db.filter(x=>x.b===f||x.b==='All');
-            d.slice(0,30).forEach(x=>{
-                // هنا التعديل: عند الضغط على الصف يتم استدعاء دالة التحميل والصعود
+            d.slice(0,50).forEach(x=>{
                 tb.innerHTML+=`<tr onclick="loadCodeFromClick('${x.c}')"><td style="padding:10px; border-bottom:1px solid #333; color:#ff6b00; font-weight:bold;">${x.c}</td><td style="padding:10px; border-bottom:1px solid #333; color:#ccc;">${x.m}</td></tr>`;
             });
         }
 
-        // Init
         window.onload = function() {
             renderTable('all');
             if(localStorage.getItem('mechanic_notes')) document.getElementById('myNotes').value = localStorage.getItem('mechanic_notes');
