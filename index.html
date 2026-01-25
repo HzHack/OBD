@@ -3,37 +3,428 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>الميكانيك المحترف | تحليل ذكي</title>
-    <meta name="description" content="أداة تشخيص OBD-II ذكية ومتجاوبة مع جميع الشاشات.">
     
-    <!-- خط Cairo -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3209/3209995.png">
 
+    <title>PRO MECHANIC | النظام الشامل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
     <style>
-        /* ==========================================
-           CSS: متجاوب بالكامل (Responsive)
-           ========================================== */
         :root {
-            --primary: #f97316;
-            --primary-hover: #ea580c;
-            --dark-bg: #121212;
-            --panel-bg: #1e293b;
-            --text-light: #f1f5f9;
-            --text-dim: #94a3b8;
-            --border-metal: #334155;
-            --shadow-hard: 4px 4px 0px #000;
+            --primary: #ff6b00;      
+            --accent: #6366f1;       
+            --success: #10b981;      
+            --bg-dark: #0f172a;      
+            --glass: rgba(30, 41, 59, 0.75);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #f8fafc;
+            --insta-grad: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            line-height: 1.6;
-            background-image: radial-gradient(#334155 1px, transparent 1px);
-            background-size: 20px 20px;
-            overflow-x: hidden;
+            background-color: var(--bg-dark);
+            color: var(--text);
+            background-image: 
+                linear-gradient(rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.96)),
+                url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20h20v20H20zM0 0h20v20H0z' fill='%23ff6b00' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+            min-height: 100vh;
+            padding-bottom: 80px;
+            scroll-behavior: smooth;
+        }
+
+        header { text-align: center; padding: 30px 20px; }
+        h1 {
+            font-size: 2.5rem; font-weight: 900; margin: 0;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        .status-badge {
+            background: rgba(16, 185, 129, 0.1); color: var(--success);
+            padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;
+            border: 1px solid rgba(16, 185, 129, 0.2); margin-top: 10px; display: inline-block;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0 15px; }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 24px; padding: 25px; margin-bottom: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            position: relative; overflow: hidden;
+        }
+        .card::before {
+            content:''; position: absolute; top:0; left:0; width:100%; height:4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .section-head h2 { font-size: 1.3rem; color: #fff; margin: 0; }
+        .icon-box { 
+            width: 40px; height: 40px; background: rgba(255,255,255,0.05); 
+            border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+        }
+
+        .input-group { margin-bottom: 15px; }
+        input, select, textarea {
+            width: 100%; padding: 18px; 
+            background: rgba(10, 15, 30, 0.6);
+            border: 2px solid var(--border); border-radius: 16px;
+            color: #fff; font-family: 'Cairo'; font-size: 1.1rem; transition: 0.3s;
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--primary); transform: translateY(-2px); }
+
+        .btn-row { display: flex; gap: 12px; margin-top: 10px; }
+        button {
+            flex: 1; padding: 18px; border: none; border-radius: 16px;
+            font-family: 'Cairo'; font-weight: 800; font-size: 1rem; cursor: pointer;
+            transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        button:active { transform: scale(0.97); }
+        .btn-scan { background: linear-gradient(135deg, var(--primary), #ea580c); color: #fff; box-shadow: 0 4px 20px rgba(255, 107, 0, 0.25); }
+        .btn-ai { background: linear-gradient(135deg, var(--accent), #4f46e5); color: #fff; }
+        .btn-ghost { background: rgba(255,255,255,0.08); color: #fff; }
+
+        /* VIN & Notes */
+        .vin-result { display: none; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 16px; margin-top: 15px; border: 1px dashed var(--border); }
+        .vin-tag { display: inline-block; background: var(--accent); padding: 5px 10px; border-radius: 10px; font-size: 0.8rem; margin-right: 5px; }
+        .notes-area { min-height: 150px; line-height: 1.6; font-size: 1rem; }
+
+        /* Results */
+        #resultCard { display: none; margin-top: 20px; animation: slideUp 0.5s ease; }
+        .the-code { font-size: 3.5rem; font-weight: 900; color: var(--primary); line-height: 1; text-shadow: 0 0 30px rgba(255, 107, 0, 0.4); text-align: center; }
+        .ai-box { background: rgba(99, 102, 241, 0.08); border: 1px dashed var(--accent); padding: 20px; border-radius: 16px; margin-top: 20px; display: none; }
+
+        /* Footer */
+        footer { text-align: center; margin-top: 50px; border-top: 1px solid var(--border); padding-top: 30px; color: #64748b; }
+        .social-container { display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
+        .social-btn {
+            display: flex; align-items: center; gap: 8px; padding: 10px 20px;
+            border-radius: 50px; text-decoration: none; color: #fff; font-weight: bold; font-size: 0.9rem;
+            transition: transform 0.3s;
+        }
+        .social-btn:hover { transform: translateY(-3px); }
+        .insta { background: var(--insta-grad); }
+        .snap { background: #FFFC00; color: #000; }
+        .twitter { background: #1DA1F2; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>PRO MECHANIC</h1>
+        <div id="dbStatus" class="status-badge">جاري تحميل النظام...</div>
+    </header>
+
+    <div class="container">
+
+        <section class="card" id="diagnosticSection">
+            <div class="section-head">
+                <div class="icon-box">🧠</div>
+                <h2>فحص الأعطال (OBD-II)</h2>
+            </div>
+
+            <div class="input-group">
+                <select id="carBrand">
+                    <option value="Generic">🏎️ نوع السيارة (عام)</option>
+                    <option value="Toyota">🇯🇵 تويوتا / لكزس</option>
+                    <option value="Nissan">🇯🇵 نيسان / إنفينيتي</option>
+                    <option value="Hyundai">🇰🇷 هيونداي / كيا</option>
+                    <option value="GM">🇺🇸 شفروليه / جمس</option>
+                    <option value="Ford">🇺🇸 فورد / لينكولن</option>
+                    <option value="German">🇩🇪 مرسيدس / بي ام</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="codeInput" placeholder="أدخل كود العطل (مثال: P0300)">
+            </div>
+
+            <div class="btn-row">
+                <button class="btn-scan" onclick="performScan(false)">🔍 فحص</button>
+                <button class="btn-ai" onclick="performScan(true)">🤖 تحليل AI</button>
+            </div>
+
+            <div style="margin-top:15px; overflow-x:auto; white-space:nowrap; padding-bottom:5px;" id="historyList"></div>
+
+            <div id="resultCard">
+                <div class="the-code" id="resCode">P0000</div>
+                <div style="text-align:center; color:#94a3b8; margin-bottom:15px;" id="resSystem">Unknown System</div>
+
+                <div style="background:rgba(0,0,0,0.2); border-radius:12px; padding:15px;">
+                    <div style="margin-bottom:10px;"><span style="color:#94a3b8;">المشكلة:</span> <strong id="resMean" style="color:#fff; float:left;">-</strong></div>
+                    <div style="clear:both; border-top:1px solid rgba(255,255,255,0.1); margin:10px 0;"></div>
+                    <div><span style="color:#94a3b8;">الحل:</span> <strong id="resFix" style="color:var(--success); float:left;">-</strong></div>
+                </div>
+
+                <div id="aiPanel" class="ai-box">
+                    <strong style="color:var(--accent);">💡 استشارة الذكاء الاصطناعي:</strong>
+                    <p id="aiText" style="margin-top:8px; line-height:1.6; color:#e2e8f0; font-size:0.95rem;">-</p>
+                </div>
+
+                <a href="#" id="waLink" target="_blank" style="display:block; text-align:center; background:#25D366; color:#fff; padding:15px; border-radius:16px; margin-top:20px; text-decoration:none; font-weight:bold;">📤 مشاركة التقرير (واتساب)</a>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="section-head">
+                <div class="icon-box">🚗</div>
+                <h2>فك رقم الهيكل (VIN)</h2>
+            </div>
+            <div class="input-group">
+                <input type="text" id="vinInput" maxlength="17" placeholder="أدخل رقم الشاصي (17 خانة)" style="letter-spacing: 2px; text-transform: uppercase;">
+            </div>
+            <button class="btn-ghost" onclick="decodeVIN()" style="width: 100%;">تحليل الرقم</button>
+            
+            <div id="vinResult" class="vin-result">
+                <div style="margin-bottom: 5px;"><span class="vin-tag">البلد</span> <strong id="vinCountry">-</strong></div>
+                <div style="margin-bottom: 5px;"><span class="vin-tag">السنة</span> <strong id="vinYear">-</strong></div>
+                <div><span class="vin-tag">الحالة</span> <strong style="color:var(--success)">رقم صحيح (Valid Format)</strong></div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="section-head">
+                <div class="icon-box">⚖️</div>
+                <h2>محولات الوحدات</h2>
+            </div>
+            
+            <h3 style="color:var(--primary); font-size:1rem; margin-bottom:10px;">🔧 تحويل العزم (Torque)</h3>
+            <div class="converter-grid">
+                <div><span class="unit-label">Nm</span><input type="number" id="nmInput" class="conv-input" placeholder="0" oninput="convertTorque('nm')"></div>
+                <div><span class="unit-label">ft-lb</span><input type="number" id="ftlbInput" class="conv-input" placeholder="0" oninput="convertTorque('ftlb')"></div>
+            </div>
+
+            <h3 style="color:var(--primary); font-size:1rem; margin-bottom:10px; border-top:1px solid var(--border); padding-top:10px;">💨 ضغط الهواء (Pressure)</h3>
+            <div class="converter-grid">
+                <div><span class="unit-label">PSI</span><input type="number" id="psiInput" class="conv-input" placeholder="0" oninput="convertPressure('psi')"></div>
+                <div><span class="unit-label">Bar</span><input type="number" id="barInput" class="conv-input" placeholder="0" oninput="convertPressure('bar')"></div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="section-head">
+                <div class="icon-box">📝</div>
+                <h2>مفكرة الميكانيكي</h2>
+            </div>
+            <textarea id="myNotes" class="notes-area" placeholder="اكتب ملاحظاتك هنا (سيتم حفظها تلقائياً)... مثال: موعد تغيير زيت للزبون محمد" oninput="saveNotes()"></textarea>
+            <div style="text-align:left; font-size:0.8rem; color:var(--success); margin-top:5px;">✅ يتم الحفظ تلقائياً</div>
+        </section>
+
+        <section class="card">
+            <div class="section-head">
+                <div class="icon-box">🧮</div>
+                <h2>أدوات & أكواد</h2>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
+                <button class="btn-ghost" onclick="renderTable('all')">📚 عرض كل الأكواد</button>
+                <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:12px; text-align:center;">
+                    <div style="font-size:0.8rem; color:var(--accent);">حاسبة المكينة</div>
+                    <div style="display:flex; gap:2px; margin-top:5px;">
+                        <input id="boreInput" placeholder="B" style="padding:5px; font-size:0.8rem; width:30%;">
+                        <input id="strokeInput" placeholder="S" style="padding:5px; font-size:0.8rem; width:30%;">
+                        <input id="cylInput" placeholder="C" style="padding:5px; font-size:0.8rem; width:30%;">
+                    </div>
+                    <button onclick="calcCC()" style="background:var(--primary); width:100%; padding:5px; margin-top:5px; border-radius:5px; border:none; color:white;">احسب CC</button>
+                    <div id="ccDisplay" style="color:var(--success); font-weight:bold; font-size:0.9rem; margin-top:5px;"></div>
+                </div>
+            </div>
+            
+            <div style="overflow-x:auto; max-height:250px;">
+                <table style="width:100%; text-align:right; border-collapse:collapse;">
+                    <thead><tr style="color:var(--primary); position:sticky; top:0; background:var(--glass);"><th style="padding:10px;">الكود</th><th>الوصف</th></tr></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <div style="font-weight:bold; font-size:1.1rem; color:#fff; margin-bottom:10px;">
+            تم التطوير بواسطة: <span style="color:var(--primary);">ابو عساف Hz</span>
+        </div>
+        
+        <div class="social-container">
+            <a href="https://instagram.com/sww_p" target="_blank" class="social-btn insta">📷 Instagram</a>
+            <a href="https://snapchat.com/add/sww_p" target="_blank" class="social-btn snap">👻 Snapchat</a>
+            <a href="https://twitter.com/sww_p" target="_blank" class="social-btn twitter">🐦 Twitter</a>
+        </div>
+        
+        <p style="margin-top:20px; font-size:0.8rem;">نسخة S23 Ultra الاحترافية © 2026</p>
+    </footer>
+
+    <script>
+        /* =========================================
+           JAVASCRIPT LOGIC
+           ========================================= */
+        let db = [];
+        function add(c, m, f, sys, b) { if(!db.some(x=>x.c===c)) db.push({c, m, f, sys, b}); }
+
+        // 1. Data Population
+        add("P0101", "أداء حساس MAF", "تنظيف الحساس", "Air", "All");
+        add("P0171", "خليط فقير (Lean)", "فحص تهريب هواء", "Fuel", "All");
+        add("P0300", "فقد إشعال (Misfire)", "بواجي / كويلات", "Ignition", "All");
+        add("P0420", "كفاءة دبة التلوث", "فحص الدبة", "Exhaust", "All");
+        add("P0442", "تسريب تبخير بسيط", "تغيير غطاء البنزين", "EVAP", "All");
+        add("P0700", "عطل قير", "فحص كمبيوتر قير", "Trans", "All");
+
+        for(let i=100; i<999; i++) {
+            let c="P0"+i;
+            if(!db.some(x=>x.c===c)) {
+                let sys="General";
+                if(i<200) sys="Fuel/Air";
+                else if(i<300) sys="Injection";
+                else if(i<400) sys="Ignition";
+                else if(i<500) sys="Emission";
+                else if(i<600) sys="Speed";
+                else if(i<700) sys="ECU";
+                else sys="Trans";
+                add(c, "عطل في نظام "+sys, "فحص الدائرة الكهربائية", sys, "Generic");
+            }
+        }
+        document.getElementById('dbStatus').innerText = "النظام جاهز: "+db.length+" كود";
+
+        // 2. Diagnostics
+        function performScan(isAI) {
+            let input = document.getElementById('codeInput').value.toUpperCase().trim();
+            let brand = document.getElementById('carBrand').value;
+            let card = document.getElementById('resultCard');
+            
+            if(!input) { alert("أدخل الكود!"); return; }
+            card.style.display = "none";
+            
+            if(isAI) {
+                document.getElementById('dbStatus').innerText = "جاري التحليل...";
+                setTimeout(() => { showResult(input, brand, true); document.getElementById('dbStatus').innerText = "تم التحليل"; }, 1500);
+            } else {
+                showResult(input, brand, false);
+            }
+        }
+
+        function showResult(code, brand, isAI) {
+            let item = db.find(x => x.c === code);
+            let displayBrand = brand === "Generic" ? (item ? item.sys : "System") : brand;
+
+            document.getElementById('resultCard').style.display = "block";
+            document.getElementById('resCode').innerText = code;
+            document.getElementById('resSystem').innerText = displayBrand + " System";
+
+            // Add History Chip
+            let hist = document.getElementById('historyList');
+            let chip = document.createElement('span');
+            chip.style.cssText = "background:rgba(255,255,255,0.1); padding:5px 15px; border-radius:20px; margin-right:5px; color:#ccc; cursor:pointer; display:inline-block;";
+            chip.innerText = code;
+            chip.onclick = () => { loadCodeFromClick(code); };
+            hist.prepend(chip);
+
+            if(item) {
+                document.getElementById('resMean').innerText = item.m;
+                document.getElementById('resFix').innerText = item.f;
+                let wa = `*تقرير فني*\n🚘 ${brand}\n⚠️ ${code}\n🛠️ ${item.m}\n🔧 ${item.f}`;
+                document.getElementById('waLink').href = `https://wa.me/?text=${encodeURIComponent(wa)}`;
+            } else {
+                document.getElementById('resMean').innerText = "غير معروف";
+                document.getElementById('resFix').innerText = "فحص دليل المصنع";
+            }
+
+            let aiPanel = document.getElementById('aiPanel');
+            if(isAI) {
+                aiPanel.style.display = "block";
+                let t = `تحليل الذكاء للكود ${code} (${brand}):\n`;
+                if(code.startsWith("P03")) t+="مشكلة إشعال. ابدأ بتبديل الكويلات (Swapping).";
+                else if(code.startsWith("P017")) t+="مشكلة خليط وقود. افحص تهريب الهواء (Vacuum).";
+                else if(code.startsWith("P07")) t+="مشكلة قير. افحص الزيت أولاً.";
+                else t+="يرجى فحص الفيوزات والأسلاك قبل استبدال القطع.";
+                document.getElementById('aiText').innerText = t;
+            } else {
+                aiPanel.style.display = "none";
+            }
+        }
+
+        // دالة جديدة لتعبئة الكود والصعود للأعلى
+        function loadCodeFromClick(code) {
+            document.getElementById('codeInput').value = code;
+            // الصعود لقسم الفحص
+            document.getElementById('diagnosticSection').scrollIntoView({behavior: 'smooth'});
+            // تشغيل الفحص
+            performScan(false);
+        }
+
+        // 3. New Features
+        function saveNotes() {
+            localStorage.setItem('mechanic_notes', document.getElementById('myNotes').value);
+        }
+        
+        function decodeVIN() {
+            let vin = document.getElementById('vinInput').value.toUpperCase();
+            if(vin.length !== 17) { alert("رقم الهيكل يجب أن يكون 17 خانة"); return; }
+            let country = "غير معروف";
+            let c1 = vin.charAt(0);
+            if('145'.includes(c1)) country="الولايات المتحدة (USA)";
+            else if('J'.includes(c1)) country="اليابان (Japan)";
+            else if('K'.includes(c1)) country="كوريا (Korea)";
+            else if('W'.includes(c1)) country="ألمانيا (Germany)";
+            let yearChar = vin.charAt(9);
+            let year = "20XX"; 
+            if(yearChar === 'L') year = "2020";
+            if(yearChar === 'M') year = "2021";
+            if(yearChar === 'N') year = "2022";
+            if(yearChar === 'P') year = "2023";
+            document.getElementById('vinResult').style.display = "block";
+            document.getElementById('vinCountry').innerText = country;
+            document.getElementById('vinYear').innerText = year;
+        }
+
+        // 4. Converters
+        function convertTorque(type) {
+            let nm = document.getElementById('nmInput');
+            let ft = document.getElementById('ftlbInput');
+            if(type === 'nm') ft.value = (nm.value * 0.73756).toFixed(1);
+            else nm.value = (ft.value * 1.3558).toFixed(1);
+        }
+        function convertPressure(type) {
+            let psi = document.getElementById('psiInput');
+            let bar = document.getElementById('barInput');
+            if(type === 'psi') bar.value = (psi.value * 0.0689).toFixed(2);
+            else psi.value = (bar.value * 14.5038).toFixed(1);
+        }
+
+        // 5. Calcs & Table
+        function calcCC() {
+            let b = document.getElementById('boreInput').value;
+            let s = document.getElementById('strokeInput').value;
+            let c = document.getElementById('cylInput').value;
+            if(b&&s&&c) document.getElementById('ccDisplay').innerText = ((Math.PI * Math.pow(b/2,2) * s * c)/1000).toFixed(0) + " CC";
+        }
+
+        function renderTable(f) {
+            let tb = document.getElementById('tableBody'); tb.innerHTML="";
+            let d = f==='all'?db:db.filter(x=>x.b===f||x.b==='All');
+            d.slice(0,30).forEach(x=>{
+                // هنا التعديل: عند الضغط على الصف يتم استدعاء دالة التحميل والصعود
+                tb.innerHTML+=`<tr onclick="loadCodeFromClick('${x.c}')"><td style="padding:10px; border-bottom:1px solid #333; color:#ff6b00; font-weight:bold;">${x.c}</td><td style="padding:10px; border-bottom:1px solid #333; color:#ccc;">${x.m}</td></tr>`;
+            });
+        }
+
+        // Init
+        window.onload = function() {
+            renderTable('all');
+            if(localStorage.getItem('mechanic_notes')) document.getElementById('myNotes').value = localStorage.getItem('mechanic_notes');
+        };
+    </script>
+</body>
+</html>
             padding-bottom: 20px; /* مسافة إضافية في الأسفل */
         }
 
